@@ -1,9 +1,18 @@
 var express = require('express');
 var morgan = require('morgan');
 var path = require('path');
+var Pool = require('pg').Pool;
 
 var app = express();
 app.use(morgan('combined'));
+
+var config = {
+  user: 'venky25',
+  database: 'venky25',
+  host: 'db.imad.hasura-app.io',
+  port: '5432',
+  password: process.env.DB_PASSWORD  //'db-venky25-98931' 
+}
 
 var data = {
    "articel-one" : {
@@ -41,6 +50,22 @@ var CreatHtml = (data) => {
 
    return html;
 }
+
+var pool = new Pool(config);
+
+app.get('/test-db', (req, res)=>{
+   pool.query('select * from "ARTICLE"', function(error, result){
+     if(error){
+       console.log('Error DB : ', error);
+       res.status(500).send(error.toString());
+     }
+     else{
+       console.log('Data : ', result);
+       res.status(200).send(JSON.stringify(result.rows));
+       
+     }
+   })
+})
 
 app.get('/:articel', (req, res) => {
    let name = req.params.articel;
