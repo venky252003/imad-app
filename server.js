@@ -28,11 +28,11 @@ var data = {
 }
 
 var CreatHtml = (data) => {
-   let title = data.title;
-   let heading = data.heading;
-   let content = data.content;
+   var title = data.title;
+   var heading = data.heading;
+   var content = data.content;
 
-   let html = `
+   var html = `
       <html>
         <head>
           <title>${title}</title>
@@ -68,7 +68,7 @@ app.get('/test-db', (req, res)=>{
 })
 
 app.get('/:articel', (req, res) => {
-   let name = req.params.articel;
+   var name = req.params.articel;
    console.log(data[name]);
    res.send(CreatHtml(data[name]));
 });
